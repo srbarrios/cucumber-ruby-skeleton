@@ -1,0 +1,7 @@
+# This file lists the features that will be executed in the first stage of a pipeline
+# Dependency of Rakefile
+
+# FIRST STAGE:
+# Set of features that must run at first place
+
+- features/first_stage/feature_a.feature

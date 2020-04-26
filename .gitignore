@@ -1,0 +1,10 @@
+.bundle
+*~
+output*.html
+failed.txt
+Gemfile.lock
+.idea/
+screenshots/
+results/
+cucumber_report/
+*.log

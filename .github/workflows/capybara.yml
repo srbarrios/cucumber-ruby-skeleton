@@ -1,0 +1,35 @@
+name: CapybaraTest
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install cucumber-html-reporter
+      run: npm install cucumber-html-reporter
+    - name: Build and test with Rake
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        SERVER=oubiti.com bundle exec rake parallel:first_stage
+        bundle exec rake utils:generate_test_report
+    - name: Archive test report artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: cucumber_report
+        path: cucumber_report

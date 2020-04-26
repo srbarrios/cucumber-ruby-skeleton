@@ -1,0 +1,8 @@
+# This file lists the features that will be executed in the first stage of a pipeline
+# Dependency of Rakefile
+
+# SECOND STAGE:
+# Set of features that must run if the first stage pass
+
+- features/second_stage/feature_b.feature
+- features/second_stage/feature_c.feature
