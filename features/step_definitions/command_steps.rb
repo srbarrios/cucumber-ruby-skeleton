@@ -1,5 +1,5 @@
 Given(/^I have ssh access to the server$/) do
-  raise "#{ENV['SERVER']} has not port 22 open" unless port_is_open(ENV['SERVER'],22)
+  raise "#{ENV['SERVER']} has not port #{ENV['SSH_PORT']} open" unless port_is_open(ENV['SERVER'], ENV['SSH_PORT'])
 end
 
 Given(/^I have access to "([^"]*)" local filename$/) do |filename|
