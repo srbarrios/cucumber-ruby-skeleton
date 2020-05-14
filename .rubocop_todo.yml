@@ -39,7 +39,7 @@ Layout/SpaceInsideParens:
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: IndentationWidth.
-Layout/Tab:
+Layout/IndentationStyle:
   Exclude:
     - 'features/step_definitions/command_steps.rb'
 
@@ -144,7 +144,7 @@ Style/TrailingCommaInArguments:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/UnneededInterpolation:
+Style/RedundantInterpolation:
   Exclude:
     - 'Rakefile'
 
@@ -152,5 +152,5 @@ Style/UnneededInterpolation:
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
-Metrics/LineLength:
+Layout/LineLength:
   Max: 273
