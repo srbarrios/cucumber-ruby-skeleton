@@ -16,7 +16,7 @@ jobs:
 
     - uses: actions/setup-ruby@v1
 
-    - name: Run RuboCop
+    - name: Install RuboCop
       run: gem install rubocop
       
     - name: Run RuboCop
