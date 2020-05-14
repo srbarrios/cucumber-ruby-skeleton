@@ -1,0 +1,26 @@
+name: Ruby checkstyle
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  ruby_checkstyle:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.1
+
+    - name: Run RuboCop
+      run: gem install rubocop -v 0.56.0
+      
+    - name: Run RuboCop
+      run: 
+        rubocop features/*
