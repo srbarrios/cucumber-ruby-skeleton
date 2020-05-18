@@ -1,18 +1,19 @@
 class RemoteNode
-  attr_accessor :hostname, :user, :password
+  attr_accessor :hostname, :port, :user, :password
 
-  def initialize(hostname, user = 'root', password = nil)
+  def initialize(hostname, port = 22, user = 'root', password = nil)
     @hostname = hostname
+    @port = port
     @user = user
     @password = password
-    puts "Remote Node initialized (#{@hostname}, #{@user}, #{@password})."
+    puts "Remote Node initialized (#{@hostname}:#{@port}, #{@user}, #{@password})."
   end
 
   def ssh(command)
-    ssh_command(command, host: @hostname, user: @user, password: @password)
+    ssh_command(command, host: @hostname, port: @port, user: @user, password: @password)
   end
 
   def scp(local_path, remote_path)
-    scp_command(local_path, remote_path, host: @hostname, user: @user, password: @password, )
+    scp_command(local_path, remote_path, host: @hostname, port: @port, user: @user, password: @password, )
   end
 end

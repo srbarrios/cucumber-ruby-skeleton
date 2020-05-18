@@ -26,17 +26,16 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}    
 
     - name: Pull Docker image
-      run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/docker-scp-server:latest
+      run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/scp-server:latest
 
     - name: Run image
       run: |
-        docker run -dit --name scp-server \
-                   -e AUTHORIZED_KEYS=~/.ssh/id_rsa.pub \
+        docker run -d --name scp-server \
+                   -e AUTHORIZED_KEYS=$(base64 -w0 ~/.ssh/id_rsa.pub) \
                    -p 22:22 \
                    -v $GITHUB_WORKSPACE/data:/home/data \
                    -v $GITHUB_WORKSPACE/ssh:/var/local/etc/ssh \
-                   docker.pkg.github.com/$GITHUB_REPOSITORY/docker-scp-server:latest
-
+                   docker.pkg.github.com/$GITHUB_REPOSITORY/scp-server:latest
 
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
@@ -54,7 +53,9 @@ jobs:
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
-        SERVER=localhost bundle exec rake parallel:second_stage
+        export SERVER=localhost
+        export SSH_PORT=22
+        bundle exec rake parallel:second_stage
         bundle exec rake utils:generate_test_report
 
     - name: Archive test report artifact

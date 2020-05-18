@@ -1,5 +1,5 @@
 Given(/^I have ssh access to the server$/) do
-  raise "#{ENV['SERVER']} has not port 22 open" unless port_is_open(ENV['SERVER'],22)
+  raise "#{ENV['SERVER']} has not port #{ENV['SSH_PORT']} open" unless port_is_open(ENV['SERVER'], ENV['SSH_PORT'])
 end
 
 Given(/^I have access to "([^"]*)" local filename$/) do |filename|
@@ -18,9 +18,8 @@ When(/^I copy "([^"]*)" file into the server temporal path$/) do |filename|
 end
 
 When(/^I remove "([^"]*)" file from the server temporal path$/) do |filename|
-  filepath = "#{File.dirname(__FILE__)}/../upload_files/#{filename}"
-  result = $server.ssh("rm /tmp/#{filepath}")
-  raise "#{filename} can't be removed" unless result[:stderr].empty?
+  result = $server.ssh("rm /tmp/#{filename}")
+  raise "/tmp/#{filename} can't be removed" unless result[:stderr].empty?
 end
 
 Then(/^I should((?: not)?) see "([^"]*)" file in my server$/) do |should_not, filename|

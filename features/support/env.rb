@@ -14,7 +14,7 @@ $stdout.sync = true
 STARTTIME = Time.new.to_i # In use to build the report
 
 ## Remote nodes
-$server = RemoteNode.new(ENV['SERVER'], user = 'data', password = 'test')
+$server = RemoteNode.new(ENV['SERVER'], port = ENV['SSH_PORT'], user = 'data', password = 'test')
 
 ## Capybara
 CHROME_OPTIONS = %w(
