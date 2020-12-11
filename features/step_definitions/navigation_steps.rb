@@ -31,3 +31,9 @@ end
 When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, textfield|
   fill_in textfield, with: text
 end
+
+## Screenshot
+
+When(/^I take a screenshot with filename "([^"]*)"$/) do |filename|
+  take_screenshot(filename)
+end

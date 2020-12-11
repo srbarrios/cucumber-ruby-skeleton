@@ -73,23 +73,27 @@ Before do |scenario|
   log "This scenario ran at: #{current_time} - #{@scenario_start_time - STARTTIME} seconds since start"
 end
 
+def take_screenshot(scenario_name)
+  begin
+    img_path = "screenshots/#{scenario_name.tr(' ./', '_')}.png"
+    if page.driver.browser.respond_to?(:save_screenshot)
+      Dir.mkdir("screenshots") unless File.directory?("screenshots")
+      page.driver.browser.save_screenshot(img_path)
+    else
+      save_screenshot(img_path)
+    end
+    # embed the image name in the cucumber HTML report
+    embed current_url, 'text/plain'
+    embed img_path, 'image/png'
+  rescue StandardError => e
+    log "Error taking a screenshot: #{e.message}"
+  end
+end
+
 # Embed a screenshot after each failed scenario
 After do |scenario|
   if scenario.failed?
-    begin
-      img_path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-      if page.driver.browser.respond_to?(:save_screenshot)
-        Dir.mkdir("screenshots") unless File.directory?("screenshots")
-        page.driver.browser.save_screenshot(img_path)
-      else
-        save_screenshot(img_path)
-      end
-      # embed the image name in the cucumber HTML report
-      embed current_url, 'text/plain'
-      embed img_path, 'image/png'
-    rescue StandardError => e
-      log "Error taking a screenshot: #{e.message}"
-    end
+    take_screenshot(scenario.name)
   end
 end
 

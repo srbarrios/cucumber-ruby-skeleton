@@ -12,3 +12,4 @@ Feature: Title of my feature A
     Given I am on the home page
     When I click on "Oubiti" button
     Then I should see a "About Me" text
+    And I take a screenshot with filename "About Me"
