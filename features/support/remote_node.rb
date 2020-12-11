@@ -6,7 +6,7 @@ class RemoteNode
     @port = port
     @user = user
     @password = password
-    puts "Remote Node initialized (#{@hostname}:#{@port}, #{@user}, #{@password})."
+    Kernel.puts "Remote Node initialized (#{@hostname}:#{@port}, #{@user}, #{@password})."
   end
 
   def ssh(command)

@@ -31,7 +31,7 @@ namespace :parallel do
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
       sh "mkdir -p #{results_dir}", verbose: false
-      cucumber_opts = "-f html -o #{results_dir}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o #{results_dir}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
+      cucumber_opts = "-f html -o #{results_dir}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o #{results_dir}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f pretty -r features "
       sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
     end
   end

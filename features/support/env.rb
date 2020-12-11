@@ -61,7 +61,7 @@ Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
 Capybara.app_host = "https://#{ENV['SERVER']}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i # Useful for concurrent threads
-puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+Kernel.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 ## Cucumber 
 
@@ -73,7 +73,7 @@ end
 Before do |scenario|
   current_time = Time.new
   @scenario_start_time = current_time.to_i
-  puts "This scenario ran at: #{current_time} - #{@scenario_start_time - STARTTIME} seconds since start"
+  log "This scenario ran at: #{current_time} - #{@scenario_start_time - STARTTIME} seconds since start"
 end
 
 # Embed a screenshot after each failed scenario
@@ -91,14 +91,14 @@ After do |scenario|
       embed current_url, 'text/plain'
       embed img_path, 'image/png'
     rescue StandardError => e
-      puts "Error taking a screenshot: #{e.message}"
+      log "Error taking a screenshot: #{e.message}"
     end
   end
 end
 
 After do |scenario|
   current_epoch = Time.new.to_i
-  puts "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+  log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
 end
 
 # Code running after each step
