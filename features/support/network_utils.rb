@@ -5,7 +5,7 @@ require 'stringio'
 Net::SSH::Transport::Algorithms::ALGORITHMS.values.each { |algs| algs.reject! { |a| a =~ /^ecd(sa|h)-sha2/ } }
 Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t =~ /^ecd(sa|h)-sha2/ }
 
-def ssh_command(command, host: SERVER, port: 22, user: 'root', password: nil)
+def ssh_command(command, host: $server, port: 22, user: 'root', password: nil)
   out = StringIO.new
   err = StringIO.new
   if password.nil?
@@ -28,7 +28,7 @@ def ssh_command(command, host: SERVER, port: 22, user: 'root', password: nil)
   { stdout: out.string, stderr: err.string }
 end
 
-def scp_command(local_path, remote_path, host: SERVER, port: 22, user: 'root', password: nil)
+def scp_command(local_path, remote_path, host: $server, port: 22, user: 'root', password: nil)
   if password.nil?
     # Not passing :password uses systems ssh keys to authenticate
     Net::SSH.start(host, user, port: port, verify_host_key: :never) do |ssh|

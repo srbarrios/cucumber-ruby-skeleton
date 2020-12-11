@@ -12,38 +12,35 @@ require_relative 'remote_node'
 $tag_enabled = true
 $stdout.sync = true
 STARTTIME = Time.new.to_i # In use to build the report
+$hostname = ENV['SERVER'] || 'oubiti.com'
+$ssh_port = ENV['SSH_PORT'] || 22
+$debug_mode = !ENV['DEBUG'].nil?
 
 ## Remote nodes
-$server = RemoteNode.new(ENV['SERVER'], port = ENV['SSH_PORT'], user = 'data', password = 'test')
+$server = RemoteNode.new($hostname, port = $ssh_port, user = 'data', password = 'test')
 
 ## Capybara
-CHROME_OPTIONS = %w(
+CHROME_OPTIONS = %W(
   --no-sandbox
-  --disable-background-networking
-  --disable-default-apps
   --disable-dev-shm-usage
-  --disable-extensions
-  --disable-sync
   --disable-gpu
   --disable-translate
-  --headless
   --hide-scrollbars
-  --metrics-recording-only
-  --mute-audio
-  --no-first-run
-  --safebrowsing-disable-auto-update
   --ignore-certificate-errors
   --ignore-ssl-errors
   --ignore-certificate-errors-spki-list
   --user-data-dir=/tmp
   --window-size=2048,2048
-  --disable-popup-blocking
-).freeze
+)
+
+CHROME_OPTIONS << '--headless' unless $debug_mode
+CHROME_OPTIONS.freeze
 
 Capybara.register_driver(:headless_chrome) do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: { args: CHROME_OPTIONS },
-    unexpectedAlertBehaviour: 'accept'
+    unexpectedAlertBehaviour: 'accept',
+    unhandledPromptBehavior: 'accept'
   )
 
   driver_options = Selenium::WebDriver::Chrome::Options.new
@@ -59,7 +56,7 @@ end
 Capybara.default_max_wait_time = 10
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
-Capybara.app_host = "https://#{ENV['SERVER']}"
+Capybara.app_host = "https://#{$hostname}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i # Useful for concurrent threads
 Kernel.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 

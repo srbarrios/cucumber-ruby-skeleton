@@ -51,5 +51,12 @@ SERVER=<FQDN or IP> bundle exec rake parallel:<your_yaml_filename>
 bundle exec rake utils:generate_test_report
 ```
 
+### Debug your tests using an IDE
+Adding this option, instead of use a headless chromedriver, it will open a chrome browser so you can add breakpoints and check your steps by eye.
+```
+DEBUG=1 SERVER=<FQDN or IP> bundle exec rake parallel:<your_yaml_filename>
+```
+
+
 ### Live example
 Check the steps in the [GitHub Action](/.github/workflows/capybara.yml).
