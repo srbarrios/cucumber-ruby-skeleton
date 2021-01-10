@@ -5,6 +5,8 @@ require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
 require 'selenium/webdriver'
+require 'site_prism'
+require 'site_prism/all_there'
 require 'securerandom'
 require_relative 'remote_node'
 
@@ -14,7 +16,7 @@ $stdout.sync = true
 STARTTIME = Time.new.to_i # In use to build the report
 $hostname = ENV['SERVER'] || 'oubiti.com'
 $ssh_port = ENV['SSH_PORT'] || 22
-$debug_mode = !ENV['DEBUG'].nil?
+$debug_mode = true if ENV['DEBUG']
 
 ## Remote nodes
 $server = RemoteNode.new($hostname, port = $ssh_port, user = 'data', password = 'test')
@@ -33,10 +35,7 @@ CHROME_OPTIONS = %W(
   --window-size=2048,2048
 )
 
-CHROME_OPTIONS << '--headless' unless $debug_mode
-CHROME_OPTIONS.freeze
-
-Capybara.register_driver(:headless_chrome) do |app|
+Capybara.register_driver(:site_prism) do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: { args: CHROME_OPTIONS },
     unexpectedAlertBehaviour: 'accept',
@@ -53,11 +52,14 @@ Capybara.register_driver(:headless_chrome) do |app|
   )
 end
 
-Capybara.default_max_wait_time = 10
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
-Capybara.app_host = "https://#{$hostname}"
-Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i # Useful for concurrent threads
+Capybara.configure do |config|
+  config.default_driver = $debug_mode ? :selenium_chrome_headless : :site_prism
+  config.default_max_wait_time = 10
+  config.javascript_driver = :site_prism
+  config.app_host = "https://#{$hostname}"
+  config.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i # Useful for concurrent threads
+end
+
 Kernel.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 ## Cucumber 
@@ -83,8 +85,8 @@ def take_screenshot(scenario_name)
       save_screenshot(img_path)
     end
     # embed the image name in the cucumber HTML report
-    embed current_url, 'text/plain'
-    embed img_path, 'image/png'
+    attach current_url, 'text/plain'
+    attach img_path, 'image/png'
   rescue StandardError => e
     log "Error taking a screenshot: #{e.message}"
   end

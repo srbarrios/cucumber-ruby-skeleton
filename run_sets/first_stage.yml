@@ -5,3 +5,4 @@
 # Set of features that must run at first place
 
 - features/first_stage/feature_a.feature
+- features/first_stage/feature_b.feature
