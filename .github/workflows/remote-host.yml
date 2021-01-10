@@ -55,6 +55,7 @@ jobs:
         bundle install --jobs 4 --retry 3
         export SERVER=localhost
         export SSH_PORT=22
+        export DEBUG=1
         bundle exec rake parallel:second_stage
         bundle exec rake utils:generate_test_report
 

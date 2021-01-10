@@ -26,7 +26,9 @@ jobs:
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
-        SERVER=oubiti.com bundle exec rake parallel:first_stage
+        export SERVER=oubiti.com
+        export DEBUG=1
+        bundle exec rake parallel:first_stage
         bundle exec rake utils:generate_test_report
     - name: Archive test report artifact
       uses: actions/upload-artifact@v1

@@ -60,7 +60,7 @@ Capybara.configure do |config|
   config.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i # Useful for concurrent threads
 end
 
-Kernel.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+log "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 ## Cucumber 
 
