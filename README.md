@@ -10,9 +10,16 @@ This is a Cucumber project skeleton, written in Ruby, using Capybara framework t
 │   ├── second_stage
 │   │   ├── feature_b.feature
 │   │   └── feature_c.feature
+│   ├── pages : Support for Page Object Model using SitePrism
+│   │   ├── blog
+│   │   │   └── blog_page.rb
+│   │   └── home
+│   │   │   └── home_page.rb
+│   │   │   └── *_section.rb : Sections of the page
 │   ├── step_definitions
 │   │   ├── command_steps.rb
-│   │   └── navigation_steps.rb
+│   │   ├── pom_navigation_steps.rb : Navigation steps using SitePrism
+│   │   └── navigation_steps.rb : Navidation steps using Capybara
 │   ├── support
 │   │   ├── constants.rb : Optional. You can organize your constants here
 │   │   ├── custom_formatter.rb : Optional. It prettify your test report
