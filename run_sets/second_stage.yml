@@ -4,5 +4,5 @@
 # SECOND STAGE:
 # Set of features that must run if the first stage pass
 
-- features/second_stage/feature_b.feature
 - features/second_stage/feature_c.feature
+- features/second_stage/feature_d.feature
